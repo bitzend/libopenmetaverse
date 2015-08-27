@@ -5,9 +5,13 @@ namespace GridProxyGUI
 	public partial class About
 	{
 		private global::Gtk.HBox hbox1;
+		
 		private global::Gtk.Image image3;
+		
 		private global::Gtk.ScrolledWindow GtkScrolledWindow;
+		
 		private global::Gtk.TextView textview1;
+		
 		private global::Gtk.Button buttonOk;
 
 		protected virtual void Build ()

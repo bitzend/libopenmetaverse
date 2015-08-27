@@ -217,6 +217,8 @@ namespace OpenMetaverse
         Debug = 6,
         /// <summary>Event message when an object uses llOwnerSay</summary>
         OwnerSay = 8,
+        /// <summary>Event message when an object uses llRegionSayTo</summary>
+        RegionSayTo = 9,
         /// <summary>Special value to support llRegionSay, never sent to the client</summary>
         RegionSay = Byte.MaxValue,
     }
@@ -2569,7 +2571,19 @@ namespace OpenMetaverse
                             switch (step.GestureStepType)
                             {
                                 case GestureStepType.Chat:
-                                    Chat(((GestureStepChat)step).Text, 0, ChatType.Normal);
+                                    string text = ((GestureStepChat)step).Text;
+                                    int channel = 0;
+                                    Match m;
+
+                                    if ((m = Regex.Match(text, @"^/(?<channel>-?[0-9]+)\s*(?<text>.*)", RegexOptions.CultureInvariant)).Success)
+                                    {
+                                        if (int.TryParse(m.Groups["channel"].Value, out channel))
+                                        {
+                                            text = m.Groups["text"].Value;
+                                        }
+                                    }
+
+                                    Chat(text, channel, ChatType.Normal);
                                     break;
 
                                 case GestureStepType.Animation:
